@@ -3,8 +3,10 @@ import 'package:flutter_internet_radio_using_provider/models/radio.dart';
 
 class RadioRowTemplate extends StatefulWidget {
   final RadioModel radioModel;
+  final bool isFavouriteOnlyRadios;
 
-  RadioRowTemplate({Key key, this.radioModel}) : super(key: key);
+  RadioRowTemplate({Key key, this.radioModel, this.isFavouriteOnlyRadios})
+      : super(key: key);
 
   @override
   _RadioRowTemplateState createState() => _RadioRowTemplateState();

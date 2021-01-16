@@ -1,33 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_internet_radio_using_provider/pages/home_page.dart';
+import 'package:flutter_internet_radio_using_provider/pages/radio_page.dart';
+import 'package:flutter_internet_radio_using_provider/services/player_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PlayerProvider(),
+          child: RadioPage(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: true,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: SafeArea(
+          bottom: false,
+          child: Scaffold(
+            primary: false,
+            body: HomePage(),
+          ),
+        ),
       ),
-      home: HomePage(),
     );
   }
 }

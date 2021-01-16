@@ -10,7 +10,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  final List<Widget> _children = [RadioPage(), Text("Page 2")];
+  final List<Widget> _children = [
+    RadioPage(
+      isFavouriteOnly: false,
+    ),
+    Text("Page 2"),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
