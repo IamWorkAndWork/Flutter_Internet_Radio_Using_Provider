@@ -14,6 +14,8 @@ class PlayerProvider with ChangeNotifier {
 
   List<RadioModel> _radioFetcher;
   List<RadioModel> get allRadio => _radioFetcher;
+  bool _isFetch = false;
+  bool get isFetch => _isFetch;
   int get totalRecords => _radioFetcher != null ? _radioFetcher.length : 0;
   RadioModel get currentRadio => _radioDetails;
 
@@ -107,8 +109,10 @@ class PlayerProvider with ChangeNotifier {
     String searchQuery = "",
     bool isFavouriteOnly = false,
   }) async {
+    _isFetch = false;
     _radioFetcher = await DBDownloadService.fetchLocalDB(
         searchQuery: searchQuery, isFavouriteOnly: isFavouriteOnly);
+    _isFetch = true;
     notifyListeners();
   }
 
@@ -117,11 +121,16 @@ class PlayerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> radioBookmarked(int radioId, bool isFavourite) async {
+  Future<void> radioBookmarked(int radioId, bool isFavourite,
+      {bool isFavoriteOnly = false}) async {
+    await Future.delayed(Duration(
+      microseconds: 500,
+    ));
+
     int isFavouriteVal = isFavourite ? 1 : 0;
     await DB.init();
     await DB.rawInsert(
         "insert or replace into radios_bookmarks (id, isFavourite) values($radioId, $isFavouriteVal)");
-    fetchAllRadios(isFavouriteOnly: isFavourite);
+    fetchAllRadios(isFavouriteOnly: isFavoriteOnly);
   }
 }

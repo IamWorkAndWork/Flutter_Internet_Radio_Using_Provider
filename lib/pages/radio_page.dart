@@ -140,7 +140,7 @@ class _RadioPageState extends State<RadioPage> {
             ),
           );
         }
-        return Expanded(child: _noData());
+        return Expanded(child: _noData(radioModel.isFetch));
       },
     );
   }
@@ -184,19 +184,19 @@ class _RadioPageState extends State<RadioPage> {
   // }
 
   _onSearchChanged() {
-    var radioBloc = Provider.of<PlayerProvider>(context, listen: false);
+    var radioProvider = Provider.of<PlayerProvider>(context, listen: false);
 
     if (_debounce?.isActive ?? false) _debounce.cancel();
 
     _debounce = Timer(Duration(microseconds: 500), () {
-      radioBloc.fetchAllRadios(
+      radioProvider.fetchAllRadios(
         isFavouriteOnly: widget.isFavouriteOnly,
         searchQuery: _searchQuery.text,
       );
     });
   }
 
-  _noData() {
+  _noData(bool isFetch) {
     String noDataText = "";
     bool showTextMessge = false;
 
@@ -204,8 +204,13 @@ class _RadioPageState extends State<RadioPage> {
         (widget.isFavouriteOnly && _searchQuery.text.isNotEmpty)) {
       noDataText = "No Favorites";
       showTextMessge = true;
+
+      if (!isFetch) {
+        showTextMessge = false;
+      }
     } else if (_searchQuery.text.isNotEmpty) {
       noDataText = "No Radio Found";
+      showTextMessge = true;
     }
 
     return Column(

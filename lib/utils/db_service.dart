@@ -46,7 +46,5 @@ abstract class DB {
     }
   }
 
-  static rawInsert(String sql) async {
-    await _db.rawInsert(sql);
-  }
+  static rawInsert(String sql) async => await _db.rawInsert(sql);
 }

@@ -20,11 +20,11 @@ class DBDownloadService {
     String searchQuery = "",
     bool isFavouriteOnly = false,
   }) async {
-    await Future.delayed(
-      Duration(
-        seconds: 1,
-      ),
-    );
+    // await Future.delayed(
+    //   Duration(
+    //     seconds: 1,
+    //   ),
+    // );
 
     if (!await isLocalDBAvailable()) {
       RadioAPIModel radioAPIModel = await fetchAllRadios();
@@ -36,6 +36,7 @@ class DBDownloadService {
         });
       }
     }
+    // print("isFavouriteOnly = ${isFavouriteOnly}");
 
     String rawQuery = "";
     if (!isFavouriteOnly) {

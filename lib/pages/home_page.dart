@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_internet_radio_using_provider/pages/fav_radios_page.dart';
 import 'package:flutter_internet_radio_using_provider/pages/radio_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _HomePageState extends State<HomePage> {
     RadioPage(
       isFavouriteOnly: false,
     ),
-    Text("Page 2"),
+    FavRadioPage(),
   ];
 
   @override

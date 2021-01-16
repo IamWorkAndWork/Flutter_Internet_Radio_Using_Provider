@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_internet_radio_using_provider/models/radio.dart';
+import 'package:flutter_internet_radio_using_provider/services/player_provider.dart';
+import 'package:provider/provider.dart';
 
 class RadioRowTemplate extends StatefulWidget {
   final RadioModel radioModel;
@@ -48,9 +50,23 @@ class _RadioRowTemplateState extends State<RadioRowTemplate> {
   }
 
   _buildAddFavouriteIcon() {
+    var playerProvider = Provider.of<PlayerProvider>(context, listen: true);
     return IconButton(
-      icon: Icon(Icons.favorite_border),
-      onPressed: () {},
+      icon: widget.radioModel.isBookmarked
+          ? Icon(Icons.favorite)
+          : Icon(
+              Icons.favorite_border,
+              color: Color(
+                0xff9097a6,
+              ),
+            ),
+      onPressed: () {
+        playerProvider.radioBookmarked(
+          widget.radioModel.id,
+          !widget.radioModel.isBookmarked,
+          isFavoriteOnly: widget.isFavouriteOnlyRadios,
+        );
+      },
       color: Color(0xff9097a6),
     );
   }
