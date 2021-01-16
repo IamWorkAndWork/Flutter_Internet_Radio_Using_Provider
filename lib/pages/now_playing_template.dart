@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_internet_radio_using_provider/services/player_provider.dart';
+import 'package:provider/provider.dart';
 
 class NowPlayingTemplate extends StatelessWidget {
   final String radioTitle;
@@ -83,9 +85,13 @@ class NowPlayingTemplate extends StatelessWidget {
   }
 
   _buildStopIcon(BuildContext context) {
+    var playerProvider = Provider.of<PlayerProvider>(context, listen: false);
+
     return IconButton(
       icon: Icon(Icons.stop),
-      onPressed: () {},
+      onPressed: () {
+        playerProvider.stopRadio();
+      },
       color: Color(0xff9097a6),
     );
   }

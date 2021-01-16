@@ -16,11 +16,21 @@ class RadioRowTemplate extends StatefulWidget {
 
 class _RadioRowTemplateState extends State<RadioRowTemplate> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return _buildSongRow();
   }
 
   Widget _buildSongRow() {
+    var playerProvider = Provider.of<PlayerProvider>(context, listen: false);
+
+    final bool _isSelctedRadio =
+        widget.radioModel.id == playerProvider.currentRadio.id;
+
     return ListTile(
       title: Text(
         widget.radioModel.radioName,
@@ -37,16 +47,53 @@ class _RadioRowTemplateState extends State<RadioRowTemplate> {
       trailing: Wrap(
         spacing: -10.0, //gap between adjacent chip
         runSpacing: 0.0, //gap between line
-        children: <Widget>[_buildPlayStopIcon(), _buildAddFavouriteIcon()],
+        children: <Widget>[
+          _buildPlayStopIcon(playerProvider, _isSelctedRadio),
+          _buildAddFavouriteIcon()
+        ],
       ),
     );
   }
 
-  _buildPlayStopIcon() {
+  _buildPlayStopIcon(PlayerProvider playerProvider, isSelctedRadio) {
     return IconButton(
-      icon: Icon(Icons.play_circle_fill),
-      onPressed: () {},
+      icon: _buildAudioButton(playerProvider, isSelctedRadio),
+      onPressed: () {
+        print(
+            "play music : ${widget.radioModel.id} | ${widget.radioModel.radioName} | ${widget.radioModel.radioUrl} | ${playerProvider.getPlayerState()}");
+        if (!playerProvider.isStopped() && isSelctedRadio) {
+          playerProvider.stopRadio();
+        } else {
+          bool isloading = playerProvider.isLoading();
+          // print("isLoading = ${isloading}");
+          if (!isloading) {
+            playerProvider.initAudioPlugin();
+            playerProvider.setAudioPlayer(widget.radioModel);
+            playerProvider.playRadio();
+          }
+        }
+      },
     );
+  }
+
+  _buildAudioButton(PlayerProvider playerProvider, bool isSelctedRadio) {
+    if (isSelctedRadio) {
+      if (playerProvider.isLoading()) {
+        return Center(
+          child: CircularProgressIndicator(strokeWidth: 2.0),
+        );
+      }
+
+      if (!playerProvider.isStopped()) {
+        return Icon(Icons.stop);
+      }
+
+      if (playerProvider.isStopped()) {
+        return Icon(Icons.play_circle_filled);
+      }
+    } else {
+      return Icon(Icons.play_circle_filled);
+    }
   }
 
   _buildAddFavouriteIcon() {

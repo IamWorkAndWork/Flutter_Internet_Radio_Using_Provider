@@ -32,7 +32,7 @@ class _RadioPageState extends State<RadioPage> {
     super.initState();
     var playerProvider = Provider.of<PlayerProvider>(context, listen: false);
 
-    playerProvider.initAudioPlayer();
+    playerProvider.initAudioPlugin();
     playerProvider.resetStreams();
     playerProvider.fetchAllRadios(isFavouriteOnly: widget.isFavouriteOnly);
 
@@ -55,6 +55,7 @@ class _RadioPageState extends State<RadioPage> {
 
   Widget _nowPlaying() {
     var playerProvider = Provider.of<PlayerProvider>(context, listen: true);
+    print("_nowPlaying status  = ${playerProvider.getPlayerState()}");
     return Visibility(
         visible: playerProvider.getPlayerState() == RadioPlayerState.PLAYING,
         child: NowPlayingTemplate(

@@ -65,10 +65,13 @@ class PlayerProvider with ChangeNotifier {
         updatePlayerState(RadioPlayerState.PLAYING);
       }
 
+      // print("1p.inMilliseconds  = ${p.inMilliseconds}");
+
       notifyListeners();
     });
 
     _audioPlayer.onPlayerStateChanged.listen((AudioPlayerState state) async {
+      print("Flutter : state : " + state.toString());
       if (state == AudioPlayerState.PLAYING) {
         //updatePlayerState(RadioPlayerState.PLAYING);
         //notifyListeners();
@@ -81,7 +84,16 @@ class PlayerProvider with ChangeNotifier {
   }
 
   playRadio() async {
-    await _audioPlayer.play(currentRadio.radioUrl, stayAwake: true);
+    print("currentRadio.radioURL1 = ${currentRadio.radioUrl}");
+
+    try {
+      print("start play radio");
+      int status =
+          await _audioPlayer.play(currentRadio.radioUrl, stayAwake: true);
+      print("play radio success ${status}");
+    } catch (e) {
+      print("play radio error : ${e.toString()}");
+    }
   }
 
   stopRadio() async {
